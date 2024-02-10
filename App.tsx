@@ -9,15 +9,29 @@ import {
 import Home from './src/screens/Home';
 import MyPage from './src/screens/MyPage';
 import { NavigationContainer } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 function App(): React.JSX.Element {
   const Stack = createNativeStackNavigator();
   const Tab = createBottomTabNavigator();
   const BottomTabScreen = () => {
     return(
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="MyPage" component={MyPage} />
+      <Tab.Navigator
+        screenOptions={({route})=>({
+          tabBarHideOnKeyboard : true,
+          tabBarShowLabel : false,
+          headerShown: false,
+          tabBarStyle:{
+            height: 70,
+          }
+        })}>
+        <Tab.Screen options={{
+          tabBarIcon : ({color,size}) => <FontAwesome name = "Home" size={size} color={color}/>
+        }} name="Home" component={Home} />
+        <Tab.Screen name="MyPage" component={MyPage} options={{
+          tabBarIcon : ({color,size}) => <FontAwesome name = "MyPage" size={size} color={color}/>
+        }}/>
       </Tab.Navigator>
     )
   }
