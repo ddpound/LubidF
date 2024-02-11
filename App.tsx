@@ -27,10 +27,10 @@ function App(): React.JSX.Element {
           }
         })}>
         <Tab.Screen options={{
-          tabBarIcon : ({color,size}) => <FontAwesome name = "Home" size={size} color={color}/>
+          tabBarIcon : ({color,size}) => <FontAwesome name = "home" size={size} color={color}/>
         }} name="Home" component={Home} />
         <Tab.Screen name="MyPage" component={MyPage} options={{
-          tabBarIcon : ({color,size}) => <FontAwesome name = "MyPage" size={size} color={color}/>
+          tabBarIcon : ({color,size}) => <FontAwesome name = "user" size={size} color={color}/>
         }}/>
       </Tab.Navigator>
     )
