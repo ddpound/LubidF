@@ -2,10 +2,36 @@ import React, { useState } from "react"
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context";
 import kakaoLogoPng from '../../assets/loginImage/kakaoLogo.png'
+import axios from "axios";
+
+const kakaoLoginClick = () => {
+    try{
+        const uri = 'http://10.0.2.2:7001/auth/test/welcome';
+
+        const {data} = axios.get(uri,null,{
+            withCredentials: true,
+          })
+        .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error.message); // 에러 메시지 출력
+            if (error.response) {
+                console.log(error.response.data); // 응답 데이터 출력
+                console.log(error.response.status); // 응답 상태 코드 출력
+                console.log(error.response.headers); // 응답 헤더 출력
+            }
+          });
+    }catch(e){
+        console.log(e);
+    }
+}
+
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
+    
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.inputContainer}>
@@ -17,7 +43,7 @@ const Login = () => {
                 <TouchableOpacity style={styles.buttonStyle}>
                     <Text style={styles.buttonText}>로그인</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.buttonStyle , styles.kakaoButtonStyle]}>
+                <TouchableOpacity style={[styles.buttonStyle , styles.kakaoButtonStyle]} onPress={kakaoLoginClick}>
                     <Image style={styles.kakaoLogoPng} source={kakaoLogoPng}/>
                     <Text style={[styles.buttonText , styles.kakaoButtonText]}>카카오 로그인</Text>
                 </TouchableOpacity>
