@@ -11,6 +11,7 @@ import MyPage from './src/screens/MyPage';
 import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Login from './src/screens/Login';
 
 function App(): React.JSX.Element {
   const Stack = createNativeStackNavigator();
@@ -38,6 +39,7 @@ function App(): React.JSX.Element {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown : false}} >
+        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Bottom" component={BottomTabScreen} />
       </Stack.Navigator>
     </NavigationContainer>
