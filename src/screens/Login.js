@@ -3,8 +3,10 @@ import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "reac
 import { SafeAreaView } from "react-native-safe-area-context";
 import kakaoLogoPng from '../../assets/loginImage/kakaoLogo.png'
 import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
 const kakaoLoginClick = () => {
+    const navigation = useNavigation();
     try{
         const uri = 'http://10.0.2.2:7001/auth/test/welcome';
 
@@ -12,7 +14,8 @@ const kakaoLoginClick = () => {
             withCredentials: true,
           })
         .then(function (response) {
-            console.log(response);
+            console.log(response.data);
+            navigation.push("Home");
           })
           .catch(function (error) {
             console.log(error.message); // 에러 메시지 출력

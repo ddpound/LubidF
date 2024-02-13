@@ -40,6 +40,7 @@ function App(): React.JSX.Element {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown : false}} >
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Bottom" component={BottomTabScreen} />
       </Stack.Navigator>
     </NavigationContainer>
