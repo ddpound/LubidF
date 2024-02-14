@@ -4,18 +4,19 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import kakaoLogoPng from '../../assets/loginImage/kakaoLogo.png'
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../authContext/AuthContext";
 
-const kakaoLoginClick = () => {
-    const navigation = useNavigation();
+const kakaoLoginClick = (navigation,logIn) => {
     try{
         const uri = 'http://10.0.2.2:7001/auth/test/welcome';
 
-        const {data} = axios.get(uri,null,{
+        axios.get(uri,null,{
             withCredentials: true,
           })
         .then(function (response) {
             console.log(response.data);
-            navigation.push("Home");
+            logIn();
+            navigation.navigate('Home');
           })
           .catch(function (error) {
             console.log(error.message); // 에러 메시지 출력
@@ -34,6 +35,8 @@ const kakaoLoginClick = () => {
 const Login = () => {
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
+    const navigation = useNavigation();
+    const { logIn } = useAuth();
     
     return (
         <SafeAreaView style={styles.container}>
@@ -46,7 +49,7 @@ const Login = () => {
                 <TouchableOpacity style={styles.buttonStyle}>
                     <Text style={styles.buttonText}>로그인</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.buttonStyle , styles.kakaoButtonStyle]} onPress={kakaoLoginClick}>
+                <TouchableOpacity style={[styles.buttonStyle , styles.kakaoButtonStyle]} onPress={()=>{kakaoLoginClick(navigation,logIn)}}>
                     <Image style={styles.kakaoLogoPng} source={kakaoLogoPng}/>
                     <Text style={[styles.buttonText , styles.kakaoButtonText]}>카카오 로그인</Text>
                 </TouchableOpacity>

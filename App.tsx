@@ -12,8 +12,20 @@ import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Login from './src/screens/Login';
+import { useAuth, AuthProvider } from './src/authContext/AuthContext';
 
 function App(): React.JSX.Element {
+  return (
+    <NavigationContainer>
+      <AuthProvider>
+       <AppNavigator />
+     </AuthProvider>
+    </NavigationContainer>
+  );
+}
+
+const AppNavigator = () => {
+  const { loggedIn } = useAuth();
   const Stack = createNativeStackNavigator();
   const Tab = createBottomTabNavigator();
   const BottomTabScreen = () => {
@@ -36,15 +48,19 @@ function App(): React.JSX.Element {
       </Tab.Navigator>
     )
   }
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown : false}} >
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {loggedIn ? (
+        <>
+          <Stack.Screen name="Bottom" component={BottomTabScreen} />
+          <Stack.Screen name="Home" component={Home} />
+        </>
+      ) : (
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Bottom" component={BottomTabScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+      )}
+    </Stack.Navigator>
   );
-}
+};
 
 export default App;
