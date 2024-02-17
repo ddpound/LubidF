@@ -5,18 +5,18 @@ import kakaoLogoPng from '../../assets/loginImage/kakaoLogo.png'
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../authContext/AuthContext";
+import * as KakaoLogin from "@react-native-seoul/kakao-login"
 
 const kakaoLoginClick = (navigation,logIn) => {
     try{
         const uri = 'http://10.0.2.2:7001/auth/test/welcome';
-
+        console.log('click');
         axios.get(uri,null,{
             withCredentials: true,
           })
         .then(function (response) {
             console.log(response.data);
-            logIn();
-            navigation.navigate('Home');
+            
           })
           .catch(function (error) {
             console.log(error.message); // 에러 메시지 출력
@@ -26,11 +26,31 @@ const kakaoLoginClick = (navigation,logIn) => {
                 console.log(error.response.headers); // 응답 헤더 출력
             }
           });
+        KakaoLogin.login().then((result) => {
+            console.log("Login Success", JSON.stringify(result));
+            getProfile(navigation,logIn);
+        }).catch((error) => {
+            if (error.code === 'E_CANCELLED_OPERATION') {
+                console.log("Login Cancel", error.message);
+            } else {
+                console.log(`Login Fail(code:${error.code})`, error.message);
+            }
+        });
+        
     }catch(e){
         console.log(e);
     }
 }
 
+const getProfile = (navigation,logIn) => {
+    KakaoLogin.getProfile().then((result) => {
+        console.log("GetProfile Success", JSON.stringify(result));
+        logIn();
+        navigation.navigate('Home');
+    }).catch((error) => {
+        console.log(`GetProfile Fail(code:${error.code})`, error.message);
+    });
+};
 
 const Login = () => {
     const [email, setEmail] = useState('');
