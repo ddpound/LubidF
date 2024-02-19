@@ -9,7 +9,7 @@ import * as KakaoLogin from "@react-native-seoul/kakao-login"
 
 const kakaoLoginClick = (navigation,logIn) => {
     try{
-        const uri = 'http://10.0.2.2:7001/auth/test/welcome';
+        const uri = 'http://192.168.219.107:7777/lubid-user/auth/test/welcome';
         console.log('click');
         axios.get(uri,null,{
             withCredentials: true,
