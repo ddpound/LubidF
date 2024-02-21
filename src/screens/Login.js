@@ -9,23 +9,6 @@ import * as KakaoLogin from "@react-native-seoul/kakao-login"
 
 const kakaoLoginClick = (navigation,logIn) => {
     try{
-        const uri = 'http://192.168.219.107:7777/lubid-user/auth/test/welcome';
-        console.log('click');
-        axios.get(uri,null,{
-            withCredentials: true,
-          })
-        .then(function (response) {
-            console.log(response.data);
-            
-          })
-          .catch(function (error) {
-            console.log(error.message); // 에러 메시지 출력
-            if (error.response) {
-                console.log(error.response.data); // 응답 데이터 출력
-                console.log(error.response.status); // 응답 상태 코드 출력
-                console.log(error.response.headers); // 응답 헤더 출력
-            }
-          });
         KakaoLogin.login().then((result) => {
             console.log("Login Success", JSON.stringify(result));
             getProfile(navigation,logIn);
@@ -45,8 +28,27 @@ const kakaoLoginClick = (navigation,logIn) => {
 const getProfile = (navigation,logIn) => {
     KakaoLogin.getProfile().then((result) => {
         console.log("GetProfile Success", JSON.stringify(result));
-        logIn();
-        navigation.navigate('Home');
+        const resultJson = result;
+        const uri = 'http://192.168.219.107:7777/lubid-user/auth/user/join';
+        console.log('click');
+        axios.post(uri,{
+            "userName" : resultJson.nickname,
+            "email" : resultJson.nickname+"@kakao.com"
+        },{
+            withCredentials: true,
+          })
+        .then(function (response) {
+            logIn();
+            navigation.navigate('Home');
+          })
+          .catch(function (error) {
+            console.log(error.message); // 에러 메시지 출력
+            if (error.response) {
+                console.log(error.response.data); // 응답 데이터 출력
+                console.log(error.response.status); // 응답 상태 코드 출력
+                console.log(error.response.headers); // 응답 헤더 출력
+            }
+          });
     }).catch((error) => {
         console.log(`GetProfile Fail(code:${error.code})`, error.message);
     });
