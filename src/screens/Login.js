@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../authContext/AuthContext";
 import * as KakaoLogin from "@react-native-seoul/kakao-login"
 
+
 const kakaoLoginClick = (navigation,logIn) => {
     try{
         KakaoLogin.login().then((result) => {
@@ -30,7 +31,7 @@ const getProfile = (navigation,logIn) => {
         console.log("GetProfile Success", JSON.stringify(result));
         const resultJson = result;
         const uri = 'http://192.168.219.107:7777/lubid-user/auth/user/join';
-        console.log('click');
+        
         axios.post(uri,{
             "userName" : resultJson.nickname,
             "email" : resultJson.nickname+"@kakao.com"
@@ -38,21 +39,30 @@ const getProfile = (navigation,logIn) => {
             withCredentials: true,
           })
         .then(function (response) {
+
             logIn();
             navigation.navigate('Home');
-          })
-          .catch(function (error) {
+        })
+        .catch(function (error) {
+            // 이미 있는 아이디 일때는 로그인 시도
+            const lginUri  = "http://192.168.219.107:7777/auth/user/login"
+            
             console.log(error.message); // 에러 메시지 출력
             if (error.response) {
                 console.log(error.response.data); // 응답 데이터 출력
                 console.log(error.response.status); // 응답 상태 코드 출력
                 console.log(error.response.headers); // 응답 헤더 출력
             }
-          });
+        });
     }).catch((error) => {
         console.log(`GetProfile Fail(code:${error.code})`, error.message);
     });
 };
+
+// 로그인 체크
+const loginCheck = (resultUserData) => {
+
+}
 
 const Login = () => {
     const [email, setEmail] = useState('');
