@@ -1,18 +1,29 @@
-import React, { useState } from "react"
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
+import React, { useState } from "react";
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import kakaoLogoPng from '../../assets/loginImage/kakaoLogo.png'
-import axios from "axios";
+import kakaoLogoPng from '../../assets/loginImage/kakaoLogo.png';
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../authContext/AuthContext";
-import * as KakaoLogin from "@react-native-seoul/kakao-login"
+import * as KakaoLogin from "@react-native-seoul/kakao-login";
+import { JwtSotrageCheck, JwtStorageSet, JwtStorageData } from "../components/AsyncData/JwtAsyncData";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
-const kakaoLoginClick = (navigation,logIn) => {
+const kakaoLoginClick = async (navigation,logIn) => {
     try{
+        await AsyncStorage.setItem('LubidJwt', '로컬스토리지테스트');
+        console.log(await AsyncStorage.getItem('LubidJwt'));
         KakaoLogin.login().then((result) => {
-            console.log("Login Success", JSON.stringify(result));
-            getProfile(navigation,logIn);
+            console.log("Kakao Login Success", JSON.stringify(result));
+            const kakaoProfile = getProfile();
+            
+            if(JwtStorageData('LubidJwt') == null){
+                console.log('null 입니다.')
+            }
+            
+            //JwtStorageSet('LubidJwt','test');
+            JwtSotrageCheck('LubidJwt');
+            logIn();
+            navigation.navigate('Home');
         }).catch((error) => {
             if (error.code === 'E_CANCELLED_OPERATION') {
                 console.log("Login Cancel", error.message);
@@ -26,43 +37,20 @@ const kakaoLoginClick = (navigation,logIn) => {
     }
 }
 
-const getProfile = (navigation,logIn) => {
+const normalLogin = (email, pwd)=>{
+    console.log("normal login try....");
+    console.log(email);
+    console.log(pwd);
+}
+
+const getProfile = () => {
     KakaoLogin.getProfile().then((result) => {
         console.log("GetProfile Success", JSON.stringify(result));
-        const resultJson = result;
-        const uri = 'http://192.168.219.107:7777/lubid-user/auth/user/join';
-        
-        axios.post(uri,{
-            "userName" : resultJson.nickname,
-            "email" : resultJson.nickname+"@kakao.com"
-        },{
-            withCredentials: true,
-          })
-        .then(function (response) {
-
-            logIn();
-            navigation.navigate('Home');
-        })
-        .catch(function (error) {
-            // 이미 있는 아이디 일때는 로그인 시도
-            const lginUri  = "http://192.168.219.107:7777/auth/user/login"
-            
-            console.log(error.message); // 에러 메시지 출력
-            if (error.response) {
-                console.log(error.response.data); // 응답 데이터 출력
-                console.log(error.response.status); // 응답 상태 코드 출력
-                console.log(error.response.headers); // 응답 헤더 출력
-            }
-        });
+        return result;
     }).catch((error) => {
         console.log(`GetProfile Fail(code:${error.code})`, error.message);
     });
 };
-
-// 로그인 체크
-const loginCheck = (resultUserData) => {
-
-}
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -73,12 +61,12 @@ const Login = () => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.inputContainer}>
-                <Text>LUBID</Text>
-                <TextInput style={styles.inputStyle} placeholder="이메일" value={email} onChange={text=>setEmail(text)}/>
-                <TextInput style={styles.inputStyle} placeholder="비밀번호" value={pwd} onChange={text=>setPwd(text)} secureTextEntry/>
+                <Text style={styles.lubidMainText}>LUBID</Text>
+                <TextInput style={styles.inputStyle} placeholder="이메일" value={email} onChangeText={text=>setEmail(text)}/>
+                <TextInput style={styles.inputStyle} placeholder="비밀번호" value={pwd} onChangeText={text=>setPwd(text)} secureTextEntry/>
             </View>
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.buttonStyle}>
+                <TouchableOpacity style={styles.buttonStyle} onPress={()=>{normalLogin(email,pwd)}}>
                     <Text style={styles.buttonText}>로그인</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.buttonStyle , styles.kakaoButtonStyle]} onPress={()=>{kakaoLoginClick(navigation,logIn)}}>
@@ -98,6 +86,11 @@ const styles = StyleSheet.create({
         justifyContent : 'center',
         alignItems : 'center'
     },
+    
+    lubidMainText:{
+        color : 'black',
+    },
+
     inputContainer : {
         width : '80%',
         marginTop : 15,
@@ -109,7 +102,8 @@ const styles = StyleSheet.create({
         paddingHorizontal : 15,
         paddingVertical : 10,
         borderRadius : 10,
-        marginTop : 5
+        marginTop : 5,
+        color: 'black'
     },
 
     buttonContainer : {
