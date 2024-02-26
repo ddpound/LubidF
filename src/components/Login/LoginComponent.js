@@ -1,13 +1,16 @@
-const JoinComponent = (resultData)=> {
+import AsyncStorage from "@react-native-async-storage/async-storage";
+const LoginComponent = async ({nickname,email})=> {
     const lginUri  = "http://192.168.219.107:7777/auth/user/login";
-
+    const jwt = null;
+    
     axios.post(lginUri,{
-        "userName" : resultData.nickname,
-        "email" : resultData.nickname+"@kakao.com"
+        "userName" : nickname,
+        "email" : nickname+"@kakao.com"
     },{
         withCredentials: true,
       })
     .then(function (response) {
+        jwt = response;
         return true;
     })
     .catch(function (error) {
@@ -20,4 +23,4 @@ const JoinComponent = (resultData)=> {
     });
 }
 
-export default JoinComponent;
+export default LoginComponent;

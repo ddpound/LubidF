@@ -4,33 +4,34 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import kakaoLogoPng from '../../assets/loginImage/kakaoLogo.png';
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../authContext/AuthContext";
-import * as KakaoLogin from "@react-native-seoul/kakao-login";
+import KakaoLoginGetProfile from "../components/KakaoLoginComponents/KakaoLoginGetProfile";
+
 import { JwtSotrageCheck, JwtStorageSet, JwtStorageData } from "../components/AsyncData/JwtAsyncData";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import JoinComponent from "../components/Join/JoinComponent";
+import LoginComponent from "../components/Login/LoginComponent";
 
 const kakaoLoginClick = async (navigation,logIn) => {
     try{
         await AsyncStorage.setItem('LubidJwt', '로컬스토리지테스트');
+        await AsyncStorage.removeItem('LubidJwt')
+        const jwtValue = await AsyncStorage.getItem("LubidJwt");
+        let profile;
+        
+        console.log("jwt value check : ", jwtValue);
+        // jwt 토큰 확인
+        if(jwtValue == null){
+            console.log("empty jwt value");
+            profile = KakaoLoginGetProfile(); // 카카오 프로파일 가져오기
+            console.log(profile);
+            LoginComponent({nickname : profile.nickname})
+        }
+        
         console.log(await AsyncStorage.getItem('LubidJwt'));
-        KakaoLogin.login().then((result) => {
-            console.log("Kakao Login Success", JSON.stringify(result));
-            const kakaoProfile = getProfile();
-            
-            if(JwtStorageData('LubidJwt') == null){
-                console.log('null 입니다.')
-            }
-            
-            //JwtStorageSet('LubidJwt','test');
-            JwtSotrageCheck('LubidJwt');
-            logIn();
-            navigation.navigate('Home');
-        }).catch((error) => {
-            if (error.code === 'E_CANCELLED_OPERATION') {
-                console.log("Login Cancel", error.message);
-            } else {
-                console.log(`Login Fail(code:${error.code})`, error.message);
-            }
-        });
+         //JwtStorageSet('LubidJwt','test');
+         //JwtSotrageCheck('LubidJwt');
+         //logIn();
+         //navigation.navigate('Home');
         
     }catch(e){
         console.log(e);
@@ -43,14 +44,7 @@ const normalLogin = (email, pwd)=>{
     console.log(pwd);
 }
 
-const getProfile = () => {
-    KakaoLogin.getProfile().then((result) => {
-        console.log("GetProfile Success", JSON.stringify(result));
-        return result;
-    }).catch((error) => {
-        console.log(`GetProfile Fail(code:${error.code})`, error.message);
-    });
-};
+
 
 const Login = () => {
     const [email, setEmail] = useState('');
