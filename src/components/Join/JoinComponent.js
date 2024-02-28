@@ -1,11 +1,11 @@
 import axios from "axios";
 
-const JoinComponent = (resultData)=> {
+const JoinComponent = (nickname,email)=> {
     const joinUri = 'http://192.168.219.107:7777/lubid-user/auth/user/join';
 
     axios.post(joinUri,{
-        "userName" : resultData.nickname,
-        "email" : resultData.nickname+"@kakao.com"
+        "userName" : nickname,
+        "email" : nickname+"@kakao.com"
     },{
         withCredentials: true,
       })

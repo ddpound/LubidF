@@ -11,7 +11,7 @@ const LoginComponent = async ({nickname,email})=> {
       })
     .then(function (response) {
         jwt = response;
-        return true;
+        return jwt != null ? jwt : null;
     })
     .catch(function (error) {
         console.log(error.message); // 에러 메시지 출력

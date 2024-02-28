@@ -13,25 +13,36 @@ import LoginComponent from "../components/Login/LoginComponent";
 
 const kakaoLoginClick = async (navigation,logIn) => {
     try{
-        await AsyncStorage.setItem('LubidJwt', '로컬스토리지테스트');
-        await AsyncStorage.removeItem('LubidJwt')
+        // JWT 토큰 값을 가지고있는지 체크
         const jwtValue = await AsyncStorage.getItem("LubidJwt");
         let profile;
-        
         console.log("jwt value check : ", jwtValue);
+        
         // jwt 토큰 확인
-        if(jwtValue == null){
+        if(jwtValue != null){
             console.log("empty jwt value");
             profile = KakaoLoginGetProfile(); // 카카오 프로파일 가져오기
             console.log(profile);
-            LoginComponent({nickname : profile.nickname})
+            jwtValue = LoginComponent({nickname : profile.nickname});
         }
         
+        // jwt 토큰이 없으면 바로 회원가입진행 후 로그인 바로 진행
+        if(jwtValue == null){
+            JoinComponent({nickname : profile.nickname});
+            jwtValue = LoginComponent({nickname : profile.nickname});
+        }
+
+        await AsyncStorage.setItem('LubidJwt', jwtValue);
+
+        if(jwtValue == null){
+            return null;
+        }
+
         console.log(await AsyncStorage.getItem('LubidJwt'));
          //JwtStorageSet('LubidJwt','test');
          //JwtSotrageCheck('LubidJwt');
-         //logIn();
-         //navigation.navigate('Home');
+         logIn();
+         navigation.navigate('Home');
         
     }catch(e){
         console.log(e);
