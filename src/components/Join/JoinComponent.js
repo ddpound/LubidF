@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const JoinComponent = (nickname,email)=> {
+const JoinComponent = ({nickname,email})=> {
     const joinUri = 'http://192.168.219.107:7777/lubid-user/auth/user/join';
 
     axios.post(joinUri,{
