@@ -3,8 +3,7 @@ import * as KakaoLogin from "@react-native-seoul/kakao-login";
 const KakaoLoginGetProfile = ()=>{
     KakaoLogin.login().then((result) => {
         console.log("Kakao Login Success", JSON.stringify(result));
-        const kakaoProfile = getProfile();
-        return kakaoProfile;
+        return getProfile();
     }).catch((error) => {
         if (error.code === 'E_CANCELLED_OPERATION') {
             console.log("Login Cancel", error.message);

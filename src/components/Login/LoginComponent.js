@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const LoginComponent = async ({nickname,email})=> {
+const LoginComponent = async (nickname,email)=> {
     const lginUri  = "http://192.168.219.107:7777/auth/user/login";
     const jwt = null;
     

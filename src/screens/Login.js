@@ -28,24 +28,16 @@ const kakaoLoginClick = async (navigation,logIn) => {
         
         // jwt 토큰이 없으면 바로 회원가입진행 후 로그인 바로 진행
         if(jwtValue == null){
-            let promise = new Promise(()=>{
-                profile = KakaoLoginGetProfile();
-            });
+            const profile = KakaoLoginGetProfile();
             
-            promise.then(()=>{
-                console.log('타이밍');
-                JoinComponent({"nickname" : profile.nickname});
-                jwtValue = LoginComponent({nickname : profile.nickname});
-            }).then(()=>{
+            JoinComponent({"nickname" : profile.nickname});
+            jwtValue = LoginComponent(profile.nickname);
+            console.log('chec2k');
                 console.log(jwtValue);
                 AsyncStorage.setItem('LubidJwt', jwtValue);
-            }).catch((error)=>{
-                console.log(error);
-            });
         }
        
-        
-
+        console.log('check');
         if(jwtValue == null){
             return null;
         }
