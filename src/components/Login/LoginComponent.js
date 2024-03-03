@@ -1,16 +1,24 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from 'axios';
+
+
 const LoginComponent = async (nickname,email)=> {
-    const lginUri  = "http://192.168.219.107:7777/auth/user/login";
-    const jwt = null;
+    const lginUri  = "http://192.168.219.106:7777/lubid-user/auth/user/login";
+    let jwt = null;
     
-    axios.post(lginUri,{
+    console.log('try backend login, loginId: ', nickname);
+    return await axios.post(lginUri,{
         "userName" : nickname,
-        "email" : nickname+"@kakao.com"
+        "password" : "1",
     },{
+        headers : { 
+            "Content-Type" : "application/json" ,
+            "Connection" : "keep-alive"
+    },
         withCredentials: true,
       })
     .then(function (response) {
-        jwt = response;
+        jwt = response.data;
         return jwt != null ? jwt : null;
     })
     .catch(function (error) {

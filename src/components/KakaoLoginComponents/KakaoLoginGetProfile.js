@@ -1,7 +1,7 @@
 import * as KakaoLogin from "@react-native-seoul/kakao-login";
 
-const KakaoLoginGetProfile = ()=>{
-    KakaoLogin.login().then((result) => {
+const KakaoLoginGetProfile = async ()=>{
+    await KakaoLogin.login().then((result) => {
         console.log("Kakao Login Success", JSON.stringify(result));
         return getProfile();
     }).catch((error) => {
@@ -13,9 +13,9 @@ const KakaoLoginGetProfile = ()=>{
     });
 }
 
-const getProfile = () => {
-    KakaoLogin.getProfile().then((result) => {
-        console.log("GetProfile Success", JSON.stringify(result));
+export const getKakaoProfile = async () => {
+    return await KakaoLogin.getProfile().then((result) => {
+        console.log("GetProfile Success", result);
         return result;
     }).catch((error) => {
         console.log(`GetProfile Fail(code:${error.code})`, error.message);
