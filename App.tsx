@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   SafeAreaView,
   Text,
@@ -13,6 +13,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Login from './src/screens/Login';
 import { useAuth, AuthProvider } from './src/authContext/AuthContext';
+import SellScreen from './src/screens/Sell/SellScreen';
+import SearchScreen from './src/screens/Search/SearchScreen';
+import CategorySreen from './src/screens/Category/CategoryScreen';
 
 function App(): React.JSX.Element {
   return (
@@ -42,6 +45,15 @@ const AppNavigator = () => {
         <Tab.Screen options={{
           tabBarIcon : ({color,size}) => <FontAwesome name = "home" size={size} color={color}/>
         }} name="Home" component={Home} />
+        <Tab.Screen name="Search" component={SearchScreen} options={{
+          tabBarIcon : ({color,size}) => <FontAwesome name = "search" size={size} color={color}/>
+        }}/>
+        <Tab.Screen name="sell" component={SellScreen} options={{
+          tabBarIcon : ({color,size}) => <FontAwesome name = "shopping-cart" size={size} color={color}/>
+        }}/>
+        <Tab.Screen name="category" component={CategorySreen} options={{
+          tabBarIcon : ({color,size}) => <FontAwesome name = "inbox" size={size} color={color}/>
+        }}/>
         <Tab.Screen name="MyPage" component={MyPage} options={{
           tabBarIcon : ({color,size}) => <FontAwesome name = "user" size={size} color={color}/>
         }}/>

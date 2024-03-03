@@ -6,9 +6,10 @@ export const JwtSotrageCheck = (key) =>{
 
 
 export const JwtStorageData = async (key) => {
-    return JSON.parse(await AsyncStorage.getItem(key));
+    console.log(key);
+    return await AsyncStorage.getItem(key);
 }
 
 export const JwtStorageSet = async (key,value) => {
-    await AsyncStorage.setItem(key,JSON.stringify(value));
+    await key,JSON.stringify(value);
 }

@@ -17,13 +17,13 @@ const kakaoLoginClick = async (navigation,logIn) => {
     let profile;
     console.log("jwt value check : ", jwtValue);
     
-    // jwt 토큰 확인
-    // if(jwtValue != null){
-    //     console.log("jwt value : " , jwtValue);
-    //     profile = await getKakaoProfile(); // 카카오 프로파일 가져오기
-    //     console.log(profile);
-    //     jwtValue = await LoginComponent({nickname : profile.nickname});
-    // }
+    // jwt 토큰값이 있을 때 로그인 체크
+    if(jwtValue != null){
+        console.log("login try : " , jwtValue);
+        profile = await getKakaoProfile(); // 카카오 프로파일 가져오기
+        console.log(profile);
+        jwtValue = await LoginComponent(profile.nickname);
+    }
     
     // jwt 토큰이 없으면 바로 회원가입진행 후 로그인 바로 진행
     if(jwtValue == null){
@@ -38,14 +38,12 @@ const kakaoLoginClick = async (navigation,logIn) => {
         console.log('value null, login fail', jwtValue);
         return null;
     }
-    
+
     console.log("success get JWT try login");
     console.log(await AsyncStorage.getItem('LubidJwt'));
-    //JwtStorageSet('LubidJwt','test');
-    //JwtSotrageCheck('LubidJwt');
+    
     await logIn();
-    await navigation.navigate('Home');
-   
+    await navigation.navigate('Bottom'); 
 }
 
 const normalLogin = (email, pwd)=>{
@@ -53,8 +51,6 @@ const normalLogin = (email, pwd)=>{
     console.log(email);
     console.log(pwd);
 }
-
-
 
 const Login = () => {
     const [email, setEmail] = useState('');
