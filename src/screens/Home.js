@@ -14,7 +14,7 @@ const checkJwt = async () =>{
 
 const Home = ()=>{
     const pageState = useState();
-
+    
     return (
         <>
             <SafeAreaView>
