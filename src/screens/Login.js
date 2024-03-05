@@ -10,13 +10,14 @@ import { JwtSotrageCheck, JwtStorageSet, JwtStorageData } from "../components/As
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import JoinComponent from "../components/Join/JoinComponent";
 import LoginComponent from "../components/Login/LoginComponent";
+import Config from 'react-native-config';
 
 const kakaoLoginClick = async (navigation,logIn) => {
     // JWT 토큰 값을 가지고있는지 체크
     let jwtValue = await AsyncStorage.getItem("LubidJwt");
     let profile;
     console.log("jwt value check : ", jwtValue);
-    
+
     // jwt 토큰값이 있을 때 로그인 체크
     if(jwtValue != null){
         console.log("login try : " , jwtValue);
@@ -58,6 +59,10 @@ const Login = () => {
     const navigation = useNavigation();
     const { logIn } = useAuth();
     
+    const checkData = Config.CHECK_DATA;
+
+    console.log(checkData);
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.inputContainer}>
