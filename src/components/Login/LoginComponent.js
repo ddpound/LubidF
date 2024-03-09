@@ -3,7 +3,7 @@ import axios from 'axios';
 
 
 const LoginComponent = async (nickname,email)=> {
-    const lginUri  = "http://192.168.219.106:7777/lubid-user/auth/user/login";
+    const lginUri  = "http://116.32.208.215:7777/lubid-user/auth/user/login";
     let jwt = null;
     
     console.log('try backend login, loginId: ', nickname);

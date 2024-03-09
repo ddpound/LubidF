@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext } from 'react';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -10,7 +10,8 @@ export const AuthProvider = ({ children }) => {
     setLoggedIn(true);
   };
 
-  const logOut = () => {
+  const logOut = async () => {
+    await AsyncStorage.removeItem("LubidJwt");
     setLoggedIn(false);
   };
 
