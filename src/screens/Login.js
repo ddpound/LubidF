@@ -4,9 +4,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import kakaoLogoPng from '../../assets/loginImage/kakaoLogo.png';
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../authContext/AuthContext";
-import {KakaoLoginGetProfile, getKakaoProfile} from "../components/KakaoLoginComponents/KakaoLoginGetProfile";
+import {getKakaoProfile} from "../components/KakaoLoginComponents/KakaoLoginGetProfile";
 
-import { JwtSotrageCheck, JwtStorageSet, JwtStorageData } from "../components/AsyncData/JwtAsyncData";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import JoinComponent from "../components/Join/JoinComponent";
 import LoginComponent from "../components/Login/LoginComponent";
@@ -59,9 +58,8 @@ const Login = () => {
     const navigation = useNavigation();
     const { logIn } = useAuth();
     
-    const checkData = Config.CHECK_DATA;
-
-    console.log(checkData);
+    // react native config 용 코드, 에러잡히면 사용 예정
+    // const checkData = Config.CHECK_DATA;
 
     return (
         <SafeAreaView style={styles.container}>

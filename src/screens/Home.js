@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native"
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context";
 import { JwtSotrageCheck, JwtStorageSet, JwtStorageData } from "../components/AsyncData/JwtAsyncData";
 import { useState } from "react";
@@ -13,21 +13,38 @@ const checkJwt = async () =>{
 }
 
 const Home = ()=>{
-    const pageState = useState();
+    const [pageState, setPageState] = useState(1);
     
     return (
         <>
-            <SafeAreaView>
-                <View style={styles.mainPageHeader}>
-                    <Text style={styles.headerText}>L U B I D</Text>
-                </View>
-                <View style={styles.bodyView}>
-                    <Text style={styles.menuText}>홈 상품 경매일정</Text>
-                </View>
-                <HomeSection/>
-                <ProductSection/>
-                <AuctionScheduleSection/>
-            </SafeAreaView>
+            <ScrollView>
+                <SafeAreaView>
+                    <View style={styles.mainPageHeader}>
+                        <Text style={styles.headerText}>L U B I D</Text>
+                    </View>
+                    <View style={styles.menuBarContainer}>
+                        <TouchableOpacity style={pageState == 1 ? styles.topMenuButtonPoint : styles.topMenuButton } onPress={()=>{setPageState(1)}}>
+                            <Text style={styles.topMenuButtonText}>홈</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={pageState == 2 ? styles.topMenuButtonPoint : styles.topMenuButton } onPress={()=>{setPageState(2)}} >
+                            <Text style={styles.topMenuButtonText}>상품</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={pageState == 3 ? styles.topMenuButtonPoint : styles.topMenuButton } onPress={()=>{setPageState(3)}}>
+                            <Text style={styles.topMenuButtonText}>경매일정</Text>
+                        </TouchableOpacity>
+                    </View>
+                    {
+                        pageState == 1 && <HomeSection/>
+                        
+                    }
+                    {
+                        pageState == 2 && <ProductSection/>
+                    }
+                    {
+                        pageState == 3 && <AuctionScheduleSection/>   
+                    }
+                </SafeAreaView>
+            </ScrollView>
         </>
     )
 }
@@ -43,6 +60,10 @@ const styles = StyleSheet.create({
         fontSize : 20,
         margin: 15,
     },
+    menuBarContainer : {
+        color : 'black',
+        flexDirection : 'row',
+    },
     bodyView : {
         color : 'black',
     },
@@ -50,5 +71,17 @@ const styles = StyleSheet.create({
         color : 'black',
         margin: 10,
         fontSize: 18,
-    }
+    },
+    topMenuButton: {
+        width : '25%',
+    },
+    topMenuButtonPoint: {
+        width : '25%',
+        backgroundColor: 'gray',
+    },
+    topMenuButtonText : {
+        color : 'black',
+        fontSize : 20,
+        textAlign: 'center',
+    },
 });
