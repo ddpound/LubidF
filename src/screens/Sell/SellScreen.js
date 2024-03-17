@@ -1,13 +1,23 @@
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
-import {Collapse,CollapseHeader, CollapseBody} from 'accordion-collapse-react-native';
+import ProductChoise from "./SellComponents/ProductChoice";
+import { useState } from "react";
+import ProductUseInfo from "./SellComponents/ProductUseInfo";
+import ProductPrice from "./SellComponents/ProductPrice";
+import ProductRegi from "./SellComponents/ProductRegi";
 
 const SellScreen = ()=>{
-   
+    const [sellState , setSellState] = useState(1);
+
     return (
         <SafeAreaView>
             <ScrollView>
                 <View style={styles.headerView}>
-                    <TouchableOpacity>
+                    <TouchableOpacity 
+                        onPress={()=>{
+                            if(sellState > 1){
+                                setSellState(sellState - 1);
+                            }
+                         }}>
                         <Text style={styles.headerViewBackButton}>{"<"}</Text>
                     </TouchableOpacity>
                     <Text style={styles.headerViewText}>판매하기</Text>
@@ -29,61 +39,18 @@ const SellScreen = ()=>{
                         </Text>
                     </View>
                 </View>
-                <View>
-                    <Collapse style={[styles.bottomBorderBlack]}>
-                        <CollapseHeader>
-                            <Text style={styles.sellerCommonHeaderText}>브랜드</Text>
-                        </CollapseHeader>
-                        <CollapseBody style={styles.collapseBody}>
-                            <Text style={styles.textBlack}>브랜드1</Text>
-                        </CollapseBody>
-                    </Collapse>
-                    <Collapse style={[styles.bottomBorderBlack]}>
-                        <CollapseHeader>
-                            <Text style={styles.sellerCommonHeaderText}>모델</Text>
-                        </CollapseHeader>
-                        <CollapseBody style={styles.collapseBody}>
-                            <Text style={styles.textBlack}>모델1</Text>
-                            <Text style={styles.textBlack}>모델2</Text>
-                            <Text style={styles.textBlack}>모델3</Text>
-                        </CollapseBody>
-                    </Collapse>
-                    <Collapse style={[styles.bottomBorderBlack]}>
-                        <CollapseHeader>
-                            <Text style={styles.sellerCommonHeaderText}>패턴</Text>
-                        </CollapseHeader>
-                        <CollapseBody style={styles.collapseBody}>
-                            <Text style={styles.textBlack}>패턴1</Text>
-                            <Text style={styles.textBlack}>패턴2</Text>
-                            <Text style={styles.textBlack}>패턴3</Text>
-                        </CollapseBody>
-                    </Collapse>
-                    <Collapse style={[styles.bottomBorderBlack]}>
-                        <CollapseHeader>
-                            <Text style={styles.sellerCommonHeaderText}>서비스</Text>
-                        </CollapseHeader>
-                        <CollapseBody style={styles.collapseBody}>
-                            <Text style={styles.textBlack}>서비스1</Text>
-                            <Text style={styles.textBlack}>서비스2</Text>
-                            <Text style={styles.textBlack}>서비스3</Text>
-                        </CollapseBody>
-                    </Collapse>
-                    <Collapse style={[styles.bottomBorderBlack]}>
-                        <CollapseHeader>
-                            <Text style={styles.sellerCommonHeaderText}>색상</Text>
-                        </CollapseHeader>
-                        <CollapseBody style={styles.collapseBody}>
-                            <Text style={styles.textBlack}>색상1</Text>
-                            <Text style={styles.textBlack}>색상2</Text>
-                            <Text style={styles.textBlack}>색상3</Text>
-                        </CollapseBody>
-                    </Collapse>
-                </View>
-                <View>
-                    <TouchableOpacity style={styles.nextButton}>
-                        <Text style={styles.nextButtonText}>다음</Text>
-                    </TouchableOpacity>
-                </View>
+                {
+                    sellState == 1 && <ProductChoise setSellState={setSellState} />
+                }
+                {
+                    sellState == 2 && <ProductUseInfo setSellState={setSellState} />
+                }
+                {
+                    sellState == 3 && <ProductPrice setSellState={setSellState} />
+                }
+                {
+                    sellState == 4 && <ProductRegi/>
+                }
             </ScrollView>
         </SafeAreaView>
     )
@@ -92,11 +59,6 @@ const SellScreen = ()=>{
 export default SellScreen;
 
 const styles = StyleSheet.create({
-    sellerCommonHeaderText:{
-        color:'black',
-        fontSize: 20,
-        margin : 20,
-    },
     headerView : {
         width : '100%',
         marginTop: 10,
@@ -112,9 +74,6 @@ const styles = StyleSheet.create({
         color : 'black',
         fontSize: 25,
         marginLeft: 10,
-    },
-    textBlack : {
-        color : "black",
     },
     // 제품선택, 사용정보, 가격 측정 view
     sellerTopView : {
@@ -137,27 +96,4 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center',
         height : '100%',
     },
-    bottomBorderBlack : {
-        borderBottomColor : 'black',
-        borderBottomWidth : 1,
-    },
-    collapseBody : {
-        margin : 20,
-    },
-    // 마지막 다음 버튼
-    nextButton : {
-        bottom : 0,
-        marginTop : '50%',
-        marginLeft: 20,
-        marginRight: 20,
-        backgroundColor : 'gray',
-        height : 40,
-        borderRadius : 10,
-    },
-    nextButtonText :{
-        color : 'black',
-        textAlign:'center',
-        textAlignVertical : 'center',
-        height : '100%',
-    }
-})
+});

@@ -16,6 +16,7 @@ import { useAuth, AuthProvider } from './src/authContext/AuthContext';
 import SellScreen from './src/screens/Sell/SellScreen';
 import SearchScreen from './src/screens/Search/SearchScreen';
 import CategorySreen from './src/screens/Category/CategoryScreen';
+import ProductRegi from './src/screens/Sell/SellComponents/ProductRegi';
 
 function App(): React.JSX.Element {
   return (
@@ -65,6 +66,7 @@ const AppNavigator = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {loggedIn ? (
         <>
+          <Stack.Screen name="ProductRegi" component={ProductRegi} />
           <Stack.Screen name="Bottom" component={BottomTabScreen} />
           <Stack.Screen name="Home" component={Home} />
         </>
