@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuth } from "../authContext/AuthContext";
 import { StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -12,18 +12,19 @@ const logout = (logOut) =>{
     logOut();
 }
 
-const getLoginData = async ()=>{
+const getLoginData = async () => {
     let jwtValue = await AsyncStorage.getItem("LubidJwt");
     // 로그인되어있는 유저의 개인정보를 가져와야함
     // 단 바로가져오지말아야하 하지만 일단 바로 띄어주기
     console.log('try get user info');
-    await axios.get('http://116.32.208.215:7777/lubid-user/user/find-user/1',{
+    return await axios.get('http://116.32.208.215:7777/lubid-user/user/find-user/1',{
         withCredentials: true,
         headers: {
             AUTHORIZATION : "Bearer " + jwtValue
         }
     }).then((res)=>{
-        console.log(res.data);
+        console.log('success data');
+        return res.data;
     }).catch((error)=>{
         console.log(error);
     });
@@ -31,15 +32,25 @@ const getLoginData = async ()=>{
 
 const MyPage = () => {
     
-    useEffect(()=>{
-        getLoginData();
+    const [userData, setUserData] = useState({});
+    
+    useEffect(()=>{ 
+        getLoginData().then((res)=>{
+            setUserData(res);
+        });
     },[]);
     
-
     const {logOut} = useAuth();
+
     return (
         <SafeAreaView>
-            <Text style={styles.titleText}> MyPage </Text>
+            <View style={styles.headerView}>
+                <Text style={styles.headerViewText}>
+                    내 정보 보기
+                </Text>
+            </View>
+            <Text style={styles.titleText}> {userData?.userName} </Text>
+            <Text style={styles.titleText}> {userData?.email} </Text>
             <TouchableOpacity style={styles.buttonStyle} onPress={()=>{logout(logOut)}}>
                 <Text>로그아웃</Text>
             </TouchableOpacity>
@@ -57,6 +68,17 @@ const styles = StyleSheet.create({
         borderRadius : 10,
         alignItems : 'center',
         marginTop : 10
+    },
+    headerView:{
+        height : 40,
+        backgroundColor : 'white',
+    },
+    headerViewText:{
+        color : 'black',
+        fontSize : 25,
+        textAlign : 'center',
+        height : '100%',
+        textAlignVertical : 'center',
     },
     titleText : {
         color : 'black',
