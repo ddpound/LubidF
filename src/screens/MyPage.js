@@ -49,8 +49,10 @@ const MyPage = () => {
                     내 정보 보기
                 </Text>
             </View>
-            <Text style={styles.titleText}> {userData?.userName} </Text>
-            <Text style={styles.titleText}> {userData?.email} </Text>
+            <View style={styles.mainBody}>
+                <Text style={styles.titleText}> 이름 :  {userData?.userName} </Text>
+                <Text style={styles.titleText}> 이메일 :  {userData?.email} </Text>
+            </View>
             <TouchableOpacity style={styles.buttonStyle} onPress={()=>{logout(logOut)}}>
                 <Text>로그아웃</Text>
             </TouchableOpacity>
@@ -67,7 +69,7 @@ const styles = StyleSheet.create({
         padding : 15,
         borderRadius : 10,
         alignItems : 'center',
-        marginTop : 10
+        marginTop : '80%',
     },
     headerView:{
         height : 40,
@@ -82,5 +84,8 @@ const styles = StyleSheet.create({
     },
     titleText : {
         color : 'black',
+    },
+    mainBody : {
+        margin : 5,
     },
 })
