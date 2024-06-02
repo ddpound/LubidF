@@ -6,6 +6,7 @@ import {TouchableOpacity} from 'react-native';
 import {useEffect, useState} from 'react';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 
 const logout = logOut => {
   console.log('logout');
@@ -35,7 +36,7 @@ const getLoginData = async () => {
 
 const MyPage = () => {
   const [userData, setUserData] = useState({});
-
+  const navigation = useNavigation();
   useEffect(() => {
     getLoginData().then(res => {
       setUserData(res);
@@ -53,6 +54,13 @@ const MyPage = () => {
         <Text style={styles.titleText}> 이름 : {userData?.userName} </Text>
         <Text style={styles.titleText}> 이메일 : {userData?.email} </Text>
       </View>
+      <TouchableOpacity
+        style={styles.buttonStyle}
+        onPress={() => {
+          navigation.navigate('SampleChatScreen');
+        }}>
+        <Text>샘플페이지(채팅)</Text>
+      </TouchableOpacity>
       <TouchableOpacity
         style={styles.buttonStyle}
         onPress={() => {
