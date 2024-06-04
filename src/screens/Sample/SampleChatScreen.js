@@ -67,7 +67,7 @@ const SampleChatScreen = () => {
   const requestRoom = () => {
     console.log('request room');
 
-    const eventSource = new EventSource(sampleUri + '/live/request-room/1');
+    const eventSource = new EventSource(sampleUri + '/live/test');
 
     eventSource.addEventListener('open', event => {
       console.log('Open SSE connection.');
@@ -76,6 +76,43 @@ const SampleChatScreen = () => {
     eventSource.addEventListener('message', event => {
       console.log('New message event:', event.data);
     });
+
+    eventSource.onmessage = event => {
+      console.log(event);
+    };
+
+    eventSource.onMessage = event => {
+      console.log(event);
+    };
+
+    eventSource.addEventListener('error', event => {
+      if (event.type === 'error') {
+        console.error('Connection error:', event.message);
+        eventSource.addEventListener('close', event => {
+          console.log('Close SSE connection.');
+        });
+      } else if (event.type === 'exception') {
+        console.error('Error:', event.message, event.error);
+      }
+    });
+  };
+
+  const testRequestSse = () => {
+    console.log('request test sse');
+
+    const eventSource = new EventSource(sampleUri + '/live/test');
+
+    eventSource.addEventListener('open', event => {
+      console.log('Open SSE connection.');
+    });
+
+    eventSource.addEventListener('message', event => {
+      console.log('New message event:', event.data);
+    });
+
+    eventSource.onmessage = event => {
+      console.log(event);
+    };
 
     eventSource.onMessage = event => {
       console.log(event);
@@ -110,6 +147,13 @@ const SampleChatScreen = () => {
         <Text> 샘플</Text>
         <Text> 샘플2 </Text>
       </View>
+      <TouchableOpacity
+        style={styles.buttonStyle}
+        onPress={() => {
+          testRequestSse();
+        }}>
+        <Text style={styles.buttonText}>연결테스트</Text>
+      </TouchableOpacity>
       <TouchableOpacity
         style={styles.buttonStyle}
         onPress={() => {
