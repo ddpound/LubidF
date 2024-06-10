@@ -67,7 +67,7 @@ const SampleChatScreen = () => {
   const requestRoom = () => {
     console.log('request room');
 
-    const eventSource = new EventSource(sampleUri + '/live/test');
+    const eventSource = new EventSource(sampleUri + '/live/request-room/1');
 
     eventSource.addEventListener('open', event => {
       console.log('Open SSE connection.');
@@ -77,24 +77,19 @@ const SampleChatScreen = () => {
       console.log('New message event:', event.data);
     });
 
-    eventSource.onmessage = event => {
-      console.log(event);
-    };
-
-    eventSource.onMessage = event => {
-      console.log(event);
-    };
-
     eventSource.addEventListener('error', event => {
       if (event.type === 'error') {
         console.error('Connection error:', event.message);
-        eventSource.addEventListener('close', event => {
-          console.log('Close SSE connection.');
-        });
       } else if (event.type === 'exception') {
         console.error('Error:', event.message, event.error);
       }
     });
+
+    // Clean up the connection when the component unmounts
+    return () => {
+      eventSource.close();
+      console.log('SSE connection closed.');
+    };
   };
 
   const testRequestSse = () => {
@@ -110,24 +105,19 @@ const SampleChatScreen = () => {
       console.log('New message event:', event.data);
     });
 
-    eventSource.onmessage = event => {
-      console.log(event);
-    };
-
-    eventSource.onMessage = event => {
-      console.log(event);
-    };
-
     eventSource.addEventListener('error', event => {
       if (event.type === 'error') {
         console.error('Connection error:', event.message);
-        eventSource.addEventListener('close', event => {
-          console.log('Close SSE connection.');
-        });
       } else if (event.type === 'exception') {
         console.error('Error:', event.message, event.error);
       }
     });
+
+    // Clean up the connection when the component unmounts
+    return () => {
+      eventSource.close();
+      console.log('SSE connection closed.');
+    };
   };
 
   const closeRoom = () => {
@@ -136,6 +126,7 @@ const SampleChatScreen = () => {
     eventSource.addEventListener('close', event => {
       console.log('Close SSE connection.');
     });
+    eventSource.close(); // Close the SSE connection
   };
 
   return (

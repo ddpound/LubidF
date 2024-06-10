@@ -40,6 +40,10 @@ class MainApplication : Application(), ReactApplication {
       // If you opted-in for the New Architecture, we load the native entry point for this app.
       load()
     }
-    ReactNativeFlipper.initializeFlipper(this, reactNativeHost.reactInstanceManager)
+    /* 
+    * sse 통신을 진행할 때 ReactNativeFlipper 가 sse 통신의 데이터를 가로채서 해당 코드는 반드시 주석처리
+    * 진행해야함. 안드로이드 모바일 어플리케이션 개발시 디버깅을 위한 도구 중 하나인데 네트워크의 요청과 응답을 모니터링 하는 플러그인 임
+    */
+    //ReactNativeFlipper.initializeFlipper(this, reactNativeHost.reactInstanceManager)
   }
 }
