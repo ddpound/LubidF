@@ -2,9 +2,11 @@ import axios from 'axios';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import EventSource from 'react-native-sse';
-
+import notifee from '@notifee/react-native';
+import {RSocketClient, JsonSerializer, IdentitySerializer} from 'rsocket-core';
+import RSocketWebSocketClient from 'rsocket-websocket-client';
 /**
- * 채팅 샘플을 위한 Screen
+ * 채팅 및 푸시 알람 샘플을 위한 Screen
  *
  * @returns safeAreaView
  *
@@ -129,6 +131,53 @@ const SampleChatScreen = () => {
     eventSource.close(); // Close the SSE connection
   };
 
+  const notificationSample = async () => {
+    console.log('sample noti push alarm');
+    // Request permissions (required for iOS)
+    await notifee.requestPermission();
+
+    // Create a channel (required for Android)
+    const channelId = await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
+    });
+
+    // Display a notification
+    await notifee.displayNotification({
+      title: 'LUBID SAMPLE PUSH ALARM',
+      body: '루비드 테스트 알림입니다.',
+      android: {
+        channelId,
+        // pressAction is needed if you want the notification to open the app when pressed
+        pressAction: {
+          id: 'default',
+        },
+      },
+    });
+  };
+
+  const RSocketExample = () => {
+    console.log('try rssocket connection');
+    const client = new WebSocket('ws://116.32.208.215:707/rsocket');
+
+    client.onopen = () => {
+      console.log('WebSocket Client Connected');
+      client.send('Hello, Server!');
+    };
+
+    client.onmessage = message => {
+      console.log('Received:', message.data);
+    };
+
+    client.onclose = () => {
+      console.log('WebSocket Client Closed');
+    };
+
+    return () => {
+      client.close();
+    };
+  };
+
   return (
     <SafeAreaView>
       <View style={styles.headerView}>
@@ -172,6 +221,20 @@ const SampleChatScreen = () => {
           sendMessage();
         }}>
         <Text style={styles.buttonText}>샘플 전송</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.buttonStyle}
+        onPress={() => {
+          notificationSample();
+        }}>
+        <Text style={styles.buttonText}>푸시 알림 테스트</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.buttonStyle}
+        onPress={() => {
+          RSocketExample();
+        }}>
+        <Text style={styles.buttonText}>실시간 채팅 테스트</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
