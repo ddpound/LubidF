@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
-    marginTop: '80%',
+    marginTop: '10%',
   },
   headerView: {
     height: 40,

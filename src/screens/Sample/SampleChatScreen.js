@@ -5,6 +5,7 @@ import EventSource from 'react-native-sse';
 import notifee from '@notifee/react-native';
 import {RSocketClient, JsonSerializer, IdentitySerializer} from 'rsocket-core';
 import RSocketWebSocketClient from 'rsocket-websocket-client';
+import {useNavigation} from '@react-navigation/native';
 /**
  * 채팅 및 푸시 알람 샘플을 위한 Screen
  *
@@ -13,6 +14,8 @@ import RSocketWebSocketClient from 'rsocket-websocket-client';
  */
 const SampleChatScreen = () => {
   const sampleUri = 'http://116.32.208.215:7777/lubid-live/auth/sample';
+
+  const navigation = useNavigation();
 
   const makeRoom = () => {
     axios
@@ -235,6 +238,13 @@ const SampleChatScreen = () => {
           RSocketExample();
         }}>
         <Text style={styles.buttonText}>실시간 채팅 테스트</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.buttonStyle}
+        onPress={() => {
+          navigation.navigate('Bottom');
+        }}>
+        <Text style={styles.buttonText}>홈으로 이동하기</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
