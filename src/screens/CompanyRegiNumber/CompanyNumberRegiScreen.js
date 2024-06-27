@@ -1,6 +1,6 @@
-import {Text, View} from 'react-native';
+import {Text, TextInput, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {useAuth} from '../authContext/AuthContext';
+import {useAuth} from '../../authContext/AuthContext';
 import {StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native';
 import {useEffect, useState} from 'react';
@@ -34,9 +34,12 @@ const getLoginData = async () => {
     });
 };
 
-const MyPage = () => {
+const CompanyNumberRegiScreen = () => {
   const [userData, setUserData] = useState({});
   const navigation = useNavigation();
+
+  const [companyRegiNumber, setCompanyRegiNumber] = useState('');
+
   useEffect(() => {
     getLoginData().then(res => {
       setUserData(res);
@@ -48,11 +51,19 @@ const MyPage = () => {
   return (
     <SafeAreaView>
       <View style={styles.headerView}>
-        <Text style={styles.headerViewText}>내 정보 보기</Text>
+        <Text style={styles.headerViewText}>사업자 관리 번호 등록 페이지</Text>
       </View>
+
       <View style={styles.mainBody}>
         <Text style={styles.titleText}> 이름 : {userData?.userName} </Text>
         <Text style={styles.titleText}> 이메일 : {userData?.email} </Text>
+
+        <TextInput
+          style={styles.inputStyle}
+          placeholder="사업자 등록 번호"
+          value={companyRegiNumber}
+          onChangeText={text => setCompanyRegiNumber(text)}
+        />
       </View>
       <TouchableOpacity
         style={styles.buttonStyle}
@@ -60,13 +71,6 @@ const MyPage = () => {
           navigation.navigate('SampleChatScreen');
         }}>
         <Text>샘플페이지(채팅)</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.buttonStyle}
-        onPress={() => {
-          navigation.navigate('CompanyNumberRegiScreen');
-        }}>
-        <Text>사업자등록번호 등록하기</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.buttonStyle}
@@ -79,7 +83,7 @@ const MyPage = () => {
   );
 };
 
-export default MyPage;
+export default CompanyNumberRegiScreen;
 
 const styles = StyleSheet.create({
   buttonStyle: {
@@ -106,5 +110,15 @@ const styles = StyleSheet.create({
   },
   mainBody: {
     margin: 5,
+  },
+
+  inputStyle: {
+    width: '100%',
+    backgroundColor: 'white',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 10,
+    marginTop: 5,
+    color: 'black',
   },
 });

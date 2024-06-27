@@ -16,7 +16,6 @@ import {getKakaoProfile} from '../components/KakaoLoginComponents/KakaoLoginGetP
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import JoinComponent from '../components/Join/JoinComponent';
 import LoginComponent from '../components/Login/LoginComponent';
-import Config from 'react-native-config';
 
 const kakaoLoginClick = async (navigation, logIn) => {
   // JWT 토큰 값을 가지고있는지 체크
