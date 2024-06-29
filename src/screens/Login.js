@@ -16,6 +16,8 @@ import {getKakaoProfile} from '../components/KakaoLoginComponents/KakaoLoginGetP
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import JoinComponent from '../components/Join/JoinComponent';
 import LoginComponent from '../components/Login/LoginComponent';
+import normalLoginTest from '../components/NormalLogin/normalLoginTest';
+import NormalLogin from '../components/NormalLogin/NormalLogin';
 
 const kakaoLoginClick = async (navigation, logIn) => {
   // JWT 토큰 값을 가지고있는지 체크
@@ -52,10 +54,36 @@ const kakaoLoginClick = async (navigation, logIn) => {
   await navigation.navigate('Bottom');
 };
 
-const normalLogin = (email, pwd) => {
+const normalLogin = async ({navigation, logIn, email, pwd}) => {
   console.log('normal login try....');
   console.log(email);
   console.log(pwd);
+
+  // 일반 로그인중 테스트 계정을 감지하면 test login 시도
+  // test 를 정적파일로 관리할지 말지는 수정되면 반드시 변경바람
+  if (email == 'testuser') {
+    // try test login
+    // set email check
+    let jwtValue = await AsyncStorage.getItem('LubidJwt');
+
+    if (!jwtValue) {
+      jwtValue = await normalLoginTest(email, pwd);
+    } else {
+      // jwt token get fail
+      console.log('jwt token get fail');
+    }
+
+    if (!jwtValue) {
+      console.log('fail login');
+      return null;
+    }
+
+    // 로그인 성공시 로그인 처리와 함께 메인페이지 이동
+    await logIn();
+    await navigation.navigate('Bottom');
+  } else {
+    await NormalLogin();
+  }
 };
 
 const Login = () => {
@@ -89,7 +117,10 @@ const Login = () => {
         <TouchableOpacity
           style={styles.buttonStyle}
           onPress={() => {
-            normalLogin(email, pwd);
+            normalLogin({
+              email: email,
+              pwd: pwd,
+            });
           }}>
           <Text style={styles.buttonText}>로그인</Text>
         </TouchableOpacity>
