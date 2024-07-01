@@ -5,17 +5,9 @@ import axios from 'axios';
  *
  */
 const normalLoginTest = async (email, pwd) => {
-  console.log('try test login');
+  console.log('try test login : 테스트 로그인 감지');
   const testLoginUrl =
     'http://116.32.208.215:7777/lubid-user/auth/test/user/lubid';
-
-  const test = 'http://116.32.208.215:7777/lubid-user/auth/test/welcome';
-
-  //test 계정 감지시 테스트 로그인 진행
-  const returnData = await axios.get(test).then(data => {
-    console.log(data);
-  });
-  console.log(returnData);
 
   return await axios
     .post(
@@ -33,6 +25,7 @@ const normalLoginTest = async (email, pwd) => {
       },
     )
     .then(function (response) {
+      console.log(response);
       jwt = response.data;
       return jwt != null ? jwt : null;
     })
