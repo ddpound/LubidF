@@ -25,7 +25,7 @@ const normalLoginTest = async (email, pwd) => {
       },
     )
     .then(function (response) {
-      console.log(response);
+      console.log(response.data);
       jwt = response.data;
       return jwt != null ? jwt : null;
     })

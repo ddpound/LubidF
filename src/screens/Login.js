@@ -120,6 +120,8 @@ const Login = () => {
             normalLogin({
               email: email,
               pwd: pwd,
+              logIn: logIn,
+              navigation: navigation,
             });
           }}>
           <Text style={styles.buttonText}>로그인</Text>
