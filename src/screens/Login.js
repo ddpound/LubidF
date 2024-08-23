@@ -59,6 +59,13 @@ const normalLogin = async ({navigation, logIn, email, pwd}) => {
   console.log(email);
   console.log(pwd);
 
+  // 임시 클라이언트 전용 테스트 유저
+  if (email == 'clientTestUser') {
+    // 로그인 성공시 로그인 처리와 함께 메인페이지 이동
+    await logIn();
+    await navigation.navigate('Bottom');
+  }
+
   // 일반 로그인중 테스트 계정을 감지하면 test login 시도
   // test 를 정적파일로 관리할지 말지는 수정되면 반드시 변경바람
   if (email == 'testuser') {

@@ -17,6 +17,7 @@ import {useEffect, useRef, useState} from 'react';
 import HomeSection from './Home/HomeSection';
 import ProductSection from './Home/ProductSection';
 import AuctionScheduleSection from './Home/AuctionScheduleSection';
+import {useNavigation} from '@react-navigation/native';
 
 const checkJwt = async () => {
   let jwtValue = await JwtStorageData('LubidJwt');
@@ -28,6 +29,8 @@ const Home = () => {
   const [pageState, setPageState] = useState(1);
   const [plusButtonContent, setPlusButtonContent] = useState('+');
   const [plusButtonState, setPlusButtonState] = useState(false);
+
+  const navigation = useNavigation();
 
   const animation = useRef(new Animated.Value(0)).current;
 
@@ -59,6 +62,10 @@ const Home = () => {
       useNativeDriver: true, // 네이티브 드라이버 사용 (퍼포먼스 향상)
     }).start();
   }, [plusButtonState]);
+
+  const goLiveRegisterPage = () => {
+    navigation.navigate('LiveRegisterScreen');
+  };
 
   return (
     <>
@@ -128,7 +135,8 @@ const Home = () => {
                   style={[
                     styles.absolutePlusMenuButton,
                     styles.absolutePencilButtonColor,
-                  ]}>
+                  ]}
+                  onPress={goLiveRegisterPage}>
                   <Image
                     style={styles.iconStyle}
                     source={require('./../../assets/mainPageIcon/leftBottomIcons/pencil-icon.png')}

@@ -15,6 +15,7 @@ import CategorySreen from './src/screens/Category/CategoryScreen';
 import ProductRegi from './src/screens/Sell/SellComponents/ProductRegi';
 import SampleChatScreen from './src/screens/Sample/SampleChatScreen';
 import CompanyNumberRegiScreen from './src/screens/CompanyRegiNumber/CompanyNumberRegiScreen';
+import LiveRegisterScreen from './src/screens/live/LiveRegisterScreen';
 
 function App(): React.JSX.Element {
   return (
@@ -98,6 +99,10 @@ const AppNavigator = () => {
           <Stack.Screen
             name="CompanyNumberRegiScreen"
             component={CompanyNumberRegiScreen}
+          />
+          <Stack.Screen
+            name="LiveRegisterScreen"
+            component={LiveRegisterScreen}
           />
           <Stack.Screen name="ProductRegi" component={ProductRegi} />
           <Stack.Screen name="Bottom" component={BottomTabScreen} />
