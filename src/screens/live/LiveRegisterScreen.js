@@ -1,9 +1,11 @@
-import {SafeAreaView, StyleSheet, Text} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 const LiveRegisterScreen = () => {
   return (
     <SafeAreaView>
-      <Text style={styles.mainText}>라이브 작성 스크린입니다.</Text>
+      <View>
+        <Text style={styles.mainText}>라이브 등록</Text>
+      </View>
     </SafeAreaView>
   );
 };
