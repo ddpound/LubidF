@@ -123,7 +123,8 @@ const Home = () => {
                   style={[
                     styles.absolutePlusMenuButton,
                     styles.absoluteCameraBottonColor,
-                  ]}>
+                  ]}
+                  onPress={goLiveRegisterPage}>
                   <Image
                     style={styles.iconStyle}
                     source={require('./../../assets/mainPageIcon/leftBottomIcons/camera-icon.png')}
@@ -135,8 +136,7 @@ const Home = () => {
                   style={[
                     styles.absolutePlusMenuButton,
                     styles.absolutePencilButtonColor,
-                  ]}
-                  onPress={goLiveRegisterPage}>
+                  ]}>
                   <Image
                     style={styles.iconStyle}
                     source={require('./../../assets/mainPageIcon/leftBottomIcons/pencil-icon.png')}
@@ -211,6 +211,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#D5D5D5',
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
   },
   absoluteCameraBottonColor: {
     backgroundColor: '#FFA7A7',
